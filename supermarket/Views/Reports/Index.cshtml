@@ -1,0 +1,44 @@
+﻿@model IEnumerable<supermarket.Models.Sale>
+
+@{
+    ViewData["Title"] = "Sales Report";
+}
+
+<h2>Sales Report</h2>
+
+<form method="get" class="form-inline mb-3">
+    <label>Start Date:</label>
+    <input type="date" name="startDate" class="form-control mx-2" />
+
+    <label>End Date:</label>
+    <input type="date" name="endDate" class="form-control mx-2" />
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<p>
+    <a asp-action="ExportPDF" asp-route-startDate="@ViewBag.StartDate" asp-route-endDate="@ViewBag.EndDate" class="btn btn-danger">Export to PDF</a>
+
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sale in Model)
+        {
+            <tr>
+                <td>@sale.Id</td>
+                <td>@sale.Customer.Name @sale.Customer.LastName</td>
+                <td>@sale.SaleDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@sale.TotalAmount.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

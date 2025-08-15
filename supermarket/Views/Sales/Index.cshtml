@@ -1,0 +1,42 @@
+﻿@model IEnumerable<supermarket.Models.Sale>
+
+@{
+    ViewData["Title"] = "Sales List";
+}
+
+<h2>Sales List</h2>
+
+<p>
+    <a asp-action="New" class="btn btn-primary">New Sale</a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Sale ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sale in Model)
+        {
+            <tr>
+                <td>@sale.Id</td>
+                <td>@sale.Customer.Name @sale.Customer.LastName</td>
+                <td>@sale.SaleDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@sale.TotalAmount.ToString("C")</td>
+                <td>
+                    <ul>
+                        @foreach (var detail in sale.SaleDetails)
+                        {
+                            <li>@detail.Product.Name - Qty: @detail.Quantity - Price: @detail.UnitPrice.ToString("C")</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
