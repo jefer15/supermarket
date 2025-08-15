@@ -2,34 +2,38 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 
 namespace supermarket.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        public LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [BindProperty]
         public InputModel Input { get; set; } = new();
 
+        [BindProperty]
         public string ReturnUrl { get; set; }
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "El correo es obligatorio.")]
+            [EmailAddress(ErrorMessage = "Formato de correo inválido.")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "La contraseña es obligatoria.")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Recuérdame")]
             public bool RememberMe { get; set; }
         }
 
@@ -38,22 +42,42 @@ namespace supermarket.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl ?? Url.Content("~/");
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync()
         {
-            returnUrl ??= Url.Content("~/");
+            var redirectUrl = ReturnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user != null)
                 {
-                    return LocalRedirect(returnUrl);
+                    var result = await _signInManager.PasswordSignInAsync(
+                        user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                    if (result.Succeeded)
+                    {
+                        return LocalRedirect(redirectUrl);
+                    }
+                    else if (result.IsLockedOut)
+                    {
+                        ModelState.AddModelError(string.Empty, "La cuenta está bloqueada.");
+                    }
+                    else if (result.IsNotAllowed)
+                    {
+                        ModelState.AddModelError(string.Empty, "No tiene permisos para iniciar sesión.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Intento de inicio de sesión inválido.");
+                    }
                 }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Correo no registrado.");
+                }
             }
 
             return Page();
         }
     }
 }
-
