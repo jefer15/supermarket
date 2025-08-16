@@ -16,14 +16,21 @@ namespace supermarket.Models
 
         [Key]
         public int Id { get; set; }
-        [StringLength(20)]
-        public string Code { get; set; } = null!;
-        [StringLength(100)]
-        public string Name { get; set; } = null!;
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal UnitPrice { get; set; }
-        public int StockQuantity { get; set; }
 
+        [StringLength(20)]
+        [Display(Name = "Código")]
+        public string Code { get; set; } = null!;
+
+        [StringLength(100)]
+        [Display(Name = "Nombre")]
+        public string Name { get; set; } = null!;
+
+        [Column(TypeName = "decimal(18, 2)")]
+        [Display(Name = "Precio Unitario")]
+        public decimal UnitPrice { get; set; }
+
+        [Display(Name = "Cantidad en Stock")]
+        public int StockQuantity { get; set; }
         [InverseProperty("Product")]
         public virtual ICollection<SaleDetail> SaleDetails { get; set; }
     }

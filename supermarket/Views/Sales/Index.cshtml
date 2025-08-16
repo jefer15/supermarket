@@ -1,42 +1,53 @@
 ﻿@model IEnumerable<supermarket.Models.Sale>
 
 @{
-    ViewData["Title"] = "Sales List";
+    ViewData["Title"] = "Ventas";
 }
 
-<h2>Sales List</h2>
+<div class="container">
+    <h2 class="mb-4"><i class="bi bi-bag-fill text-primary"></i> Lista de Ventas</h2>
 
-<p>
-    <a asp-action="New" class="btn btn-primary">New Sale</a>
-</p>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nueva Venta
+        </a>
+    </p>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Sale ID</th>
-            <th>Customer</th>
-            <th>Date</th>
-            <th>Total</th>
-            <th>Details</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var sale in Model)
-        {
+    <table class="table table-hover table-bordered align-middle">
+        <thead class="table-primary text-center">
             <tr>
-                <td>@sale.Id</td>
-                <td>@sale.Customer.Name @sale.Customer.LastName</td>
-                <td>@sale.SaleDate.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@sale.TotalAmount.ToString("C")</td>
-                <td>
-                    <ul>
-                        @foreach (var detail in sale.SaleDetails)
-                        {
-                            <li>@detail.Product.Name - Qty: @detail.Quantity - Price: @detail.UnitPrice.ToString("C")</li>
-                        }
-                    </ul>
-                </td>
+                <th>ID de la venta</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
+                <th>Detalles</th>
+                <th>Total</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No se encontraron ventas registradas.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var sale in Model)
+                {
+                    <tr>
+                        <td class="text-center">@sale.Id</td>
+                        <td>@sale.Customer.Name @sale.Customer.LastName</td>
+                        <td class="text-center">@sale.SaleDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            @foreach (var detail in sale.SaleDetails)
+                            {
+                                <div>Producto: @detail.Product.Name - Cantidad: @detail.Quantity - Precio unitario: @detail.UnitPrice.ToString("C")</div>
+                            }
+                        </td>
+                        <td class="text-end fw-bold">@sale.TotalAmount.ToString("C")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

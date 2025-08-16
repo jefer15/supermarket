@@ -2,20 +2,77 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Supermarket System</h1>
+<div class="bg-gradient-primary text-white text-center py-5 mb-4" style="background: linear-gradient(90deg, #007bff, #6610f2);">
+    <div class="container">
+        <h1 class="display-4 fw-bold">
+            <i class="bi bi-shop-window"></i> Sistema de Supermercado
+        </h1>
+        <p class="lead">Gestión completa de inventario, clientes, ventas y reportes</p>
+    </div>
+</div>
 
+<div class="container">
     @if (!(User?.Identity?.IsAuthenticated ?? false))
     {
-        <p>Please <a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Register">Register</a> to continue.</p>
+        <div class="alert alert-light border shadow-sm text-center">
+            <i class="bi bi-person-lock fs-4"></i> 
+            <span class="ms-2">Por favor 
+                <a asp-area="Identity" asp-page="/Account/Login" class="fw-bold text-primary">Inicia sesión</a> 
+                o 
+                <a asp-area="Identity" asp-page="/Account/Register" class="fw-bold text-primary">Regístrate</a> 
+                para continuar.
+            </span>
+        </div>
     }
     else
     {
-        <p>
-            Go to <a asp-controller="Products" asp-action="Index">Products</a> |
-            <a asp-controller="Customers" asp-action="Index">Customers</a> |
-            <a asp-controller="Sales" asp-action="Index">Sales</a> |
-            <a asp-controller="Reports" asp-action="Index">Reports</a>
-        </p>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <a asp-controller="Products" asp-action="Index" class="text-decoration-none">
+                    <div class="card shadow-lg border-0 text-center p-4 hover-card h-100">
+                        <i class="bi bi-box-seam-fill display-4 text-primary mb-3"></i>
+                        <h5 class="fw-bold">Productos</h5>
+                        <p class="text-muted small">Administra tu inventario</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a asp-controller="Customers" asp-action="Index" class="text-decoration-none">
+                    <div class="card shadow-lg border-0 text-center p-4 hover-card h-100">
+                        <i class="bi bi-people-fill display-4 text-success mb-3"></i>
+                        <h5 class="fw-bold">Clientes</h5>
+                        <p class="text-muted small">Gestiona tu base de clientes</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a asp-controller="Sales" asp-action="Index" class="text-decoration-none">
+                    <div class="card shadow-lg border-0 text-center p-4 hover-card h-100">
+                        <i class="bi bi-cart-check-fill display-4 text-warning mb-3"></i>
+                        <h5 class="fw-bold">Ventas</h5>
+                        <p class="text-muted small">Registra y controla tus ventas</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a asp-controller="Reports" asp-action="Index" class="text-decoration-none">
+                    <div class="card shadow-lg border-0 text-center p-4 hover-card h-100">
+                        <i class="bi bi-bar-chart-fill display-4 text-danger mb-3"></i>
+                        <h5 class="fw-bold">Reportes</h5>
+                        <p class="text-muted small">Visualiza las ventas y descarga reportes</p>
+                    </div>
+                </a>
+            </div>
+        </div>
     }
 </div>
+
+<style>
+    .hover-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+    }
+</style>

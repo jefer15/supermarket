@@ -28,7 +28,7 @@ namespace supermarket.Controllers
             return View(sales);
         }
 
-        public IActionResult New()
+        public IActionResult Create()
         {
             ViewBag.Products = _context.Products.ToList();
             return View(new SaleViewModel());

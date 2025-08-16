@@ -159,5 +159,35 @@ namespace supermarket.Controllers
         {
           return (_context.Customers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCustomerAjax([FromForm] Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Customers.Add(customer);
+                    await _context.SaveChangesAsync();
+
+                    return Json(new
+                    {
+                        success = true,
+                        customer = new
+                        {
+                            id = customer.Id,
+                            name = customer.Name,
+                            lastName = customer.LastName
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+
+            return Json(new { success = false, message = "Invalid data" });
+        }
     }
 }

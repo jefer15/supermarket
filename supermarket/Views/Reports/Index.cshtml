@@ -1,44 +1,66 @@
 ﻿@model IEnumerable<supermarket.Models.Sale>
 
 @{
-    ViewData["Title"] = "Sales Report";
+    ViewData["Title"] = "Reportes";
 }
 
-<h2>Sales Report</h2>
+<div class="container">
+    <h2 class="mb-4"><i class="bi bi-bar-chart-fill text-primary"></i> Reporte de Ventas</h2>
 
-<form method="get" class="form-inline mb-3">
-    <label>Start Date:</label>
-    <input type="date" name="startDate" class="form-control mx-2" />
+    <form method="get" class="row g-3 mb-3 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Fecha de Inicio:</label>
+            <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label fw-bold">Fecha de Fin:</label>
+            <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control" />
+        </div>
+        <div class="col-md-6 text-end">
+            <button type="submit" class="btn btn-primary me-2">
+                <i class="bi bi-funnel-fill"></i> Filtrar
+            </button>
+            <a asp-action="ExportPDF" asp-route-startDate="@ViewBag.StartDate" asp-route-endDate="@ViewBag.EndDate" class="btn btn-danger">
+                <i class="bi bi-file-earmark-pdf-fill"></i> Descargar PDF
+            </a>
+        </div>
+    </form>
 
-    <label>End Date:</label>
-    <input type="date" name="endDate" class="form-control mx-2" />
-
-    <button type="submit" class="btn btn-primary">Filter</button>
-</form>
-
-<p>
-    <a asp-action="ExportPDF" asp-route-startDate="@ViewBag.StartDate" asp-route-endDate="@ViewBag.EndDate" class="btn btn-danger">Export to PDF</a>
-
-</p>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Sale ID</th>
-            <th>Customer</th>
-            <th>Date</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var sale in Model)
-        {
+    <table class="table table-hover table-bordered align-middle">
+        <thead class="table-primary text-center">
             <tr>
-                <td>@sale.Id</td>
-                <td>@sale.Customer.Name @sale.Customer.LastName</td>
-                <td>@sale.SaleDate.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@sale.TotalAmount.ToString("C")</td>
+                <th>ID de la venta</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
+                <th>Detalles</th>
+                <th>Total</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No se encontraron ventas para el período seleccionado.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var sale in Model)
+                {
+                    <tr>
+                        <td class="text-center">@sale.Id</td>
+                        <td>@sale.Customer.Name @sale.Customer.LastName</td>
+                        <td class="text-center">@sale.SaleDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            @foreach(var detail in sale.SaleDetails)
+                            {
+                                <div>Producto: @detail.Product.Name - Cantidad: @detail.Quantity - Precio unitario: @detail.UnitPrice.ToString("C")</div>
+                            }
+                        </td>
+                        <td class="text-end fw-bold">@sale.TotalAmount.ToString("C")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

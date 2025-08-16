@@ -16,17 +16,29 @@ namespace supermarket.Models
 
         [Key]
         public int Id { get; set; }
+
         [StringLength(20)]
+        [Display(Name = "Número de Identificación")]
         public string IdentificationNumber { get; set; } = null!;
+
         [StringLength(50)]
+        [Display(Name = "Nombre")]
         public string Name { get; set; } = null!;
+
         [StringLength(50)]
+        [Display(Name = "Apellido")]
         public string LastName { get; set; } = null!;
+
         [StringLength(100)]
+        [Display(Name = "Dirección")]
         public string? Address { get; set; }
+
         [StringLength(20)]
+        [Display(Name = "Teléfono")]
         public string? Phone { get; set; }
+
         [StringLength(100)]
+        [Display(Name = "Correo Electrónico")]
         public string? Email { get; set; }
 
         [InverseProperty("Customer")]
