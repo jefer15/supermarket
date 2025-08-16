@@ -19,7 +19,6 @@ namespace supermarket.Controllers
             _context = context;
         }
 
-        // GET: Customers
         public async Task<IActionResult> Index()
         {
               return _context.Customers != null ? 
@@ -27,7 +26,6 @@ namespace supermarket.Controllers
                           Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
         }
 
-        // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Customers == null)
@@ -45,15 +43,11 @@ namespace supermarket.Controllers
             return View(customer);
         }
 
-        // GET: Customers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Customers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,IdentificationNumber,Name,LastName,Address,Phone,Email")] Customer customer)
@@ -67,7 +61,6 @@ namespace supermarket.Controllers
             return View(customer);
         }
 
-        // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Customers == null)
@@ -83,9 +76,6 @@ namespace supermarket.Controllers
             return View(customer);
         }
 
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,IdentificationNumber,Name,LastName,Address,Phone,Email")] Customer customer)
@@ -118,7 +108,6 @@ namespace supermarket.Controllers
             return View(customer);
         }
 
-        // GET: Customers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Customers == null)
@@ -136,7 +125,6 @@ namespace supermarket.Controllers
             return View(customer);
         }
 
-        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -187,7 +175,7 @@ namespace supermarket.Controllers
                 }
             }
 
-            return Json(new { success = false, message = "Invalid data" });
+            return Json(new { success = false, message = "Datos inválidos" });
         }
     }
 }

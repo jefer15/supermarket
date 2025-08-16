@@ -48,10 +48,10 @@ namespace supermarket.Controllers
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == request.ProductId);
             if (product == null)
-                return Json(new { success = false, message = "Product not found." });
+                return Json(new { success = false, message = "Producto no encontrado." });
 
             if (product.StockQuantity < request.Quantity)
-                return Json(new { success = false, message = "Not enough stock available." });
+                return Json(new { success = false, message = "No hay suficiente stock disponible." });
 
             var subtotal = product.UnitPrice * request.Quantity;
             return Json(new
@@ -70,14 +70,14 @@ namespace supermarket.Controllers
         {
             var customer = _context.Customers.FirstOrDefault(c => c.Id == request.CustomerId);
             if (customer == null)
-                return Json(new { success = false, message = "Customer not found." });
+                return Json(new { success = false, message = "Cliente no encontrado." });
 
             decimal total = 0;
             foreach (var item in request.Products)
             {
                 var product = _context.Products.FirstOrDefault(p => p.Id == item.ProductId);
                 if (product == null || product.StockQuantity < item.Quantity)
-                    return Json(new { success = false, message = $"Not enough stock for {product?.Name}" });
+                    return Json(new { success = false, message = $"No hay suficiente stock para {product?.Name}" });
 
                 total += product.UnitPrice * item.Quantity;
             }
@@ -113,7 +113,7 @@ namespace supermarket.Controllers
 
             _context.SaveChanges();
 
-            return Json(new { success = true, message = "Sale successfully recorded." });
+            return Json(new { success = true, message = "La venta se registró correctamente." });
         }
     }
 }
