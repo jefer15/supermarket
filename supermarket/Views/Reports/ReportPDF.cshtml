@@ -13,7 +13,7 @@
         h2 { text-align: center; color: #333; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         table, th, td { border: 1px solid #000; padding: 6px; }
-        th { background-color: #f2f2f2; text-align: center; }
+        th { background-color: #cfe2ff; text-align: center; }
         .text-center { text-align: center; }
         .text-end { text-align: right; }
     </style>
@@ -42,7 +42,7 @@
                 @foreach (var sale in Model)
                 {
                     <tr>
-                        <td class="text-center">@sale.Id</td>
+                        <td class="text-center fw-bold">@sale.Id</td>
                         <td>@sale.Customer.Name @sale.Customer.LastName</td>
                         <td class="text-center">@sale.SaleDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>

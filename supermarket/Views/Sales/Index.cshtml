@@ -5,18 +5,20 @@
 }
 
 <div class="container">
-    <h2 class="mb-4"><i class="bi bi-bag-fill text-primary"></i> Lista de Ventas</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <h2 class="text-primary">
+            <i class="bi bi-bag-fill"></i> Lista de Ventas
+        </h2>
 
-    <p>
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Nueva Venta
-        </a>
-    </p>
+         <a asp-action="Create" class="btn btn-success">
+              <i class="bi bi-plus-circle"></i> Nueva Venta
+         </a>
+    </div>
 
-    <table class="table table-hover table-bordered align-middle">
+    <table class="table table-hover table-striped table-bordered align-middle  rounded">
         <thead class="table-primary text-center">
             <tr>
-                <th>ID de la venta</th>
+                <th>ID</th>
                 <th>Cliente</th>
                 <th>Fecha</th>
                 <th>Detalles</th>
@@ -27,7 +29,9 @@
             @if (!Model.Any())
             {
                 <tr>
-                    <td colspan="5" class="text-center text-muted">No se encontraron ventas registradas.</td>
+                    <td colspan="5" class="text-center text-muted">
+                        <i class="bi bi-info-circle"></i> No se encontraron ventas registradas.
+                    </td>
                 </tr>
             }
             else
@@ -35,13 +39,17 @@
                 @foreach (var sale in Model)
                 {
                     <tr>
-                        <td class="text-center">@sale.Id</td>
+                        <td class="text-center fw-bold">@sale.Id</td>
                         <td>@sale.Customer.Name @sale.Customer.LastName</td>
                         <td class="text-center">@sale.SaleDate.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
                             @foreach (var detail in sale.SaleDetails)
                             {
-                                <div>Producto: @detail.Product.Name - Cantidad: @detail.Quantity - Precio unitario: @detail.UnitPrice.ToString("C")</div>
+                                <div>
+                                    <span class="fw-bold">@detail.Product.Name</span> -
+                                    Cantidad: @detail.Quantity -
+                                    Precio: @detail.UnitPrice.ToString("C")
+                                </div>
                             }
                         </td>
                         <td class="text-end fw-bold">@sale.TotalAmount.ToString("C")</td>
